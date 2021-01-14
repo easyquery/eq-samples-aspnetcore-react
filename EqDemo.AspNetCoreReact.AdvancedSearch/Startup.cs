@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 
 using Korzh.EasyQuery.Services;
 
-namespace EqReactDemo
+namespace EqDemo
 {
     public class Startup
     {
@@ -23,6 +24,9 @@ namespace EqReactDemo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppDbContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("EqDemoDb"));
+            });
 
             services.AddCors(options =>
             {
@@ -44,8 +48,10 @@ namespace EqReactDemo
             });
 
             services.AddEasyQuery()
-                    .UseSqlManager()
-                    .AddDefaultExporters();
+                  .AddDefaultExporters()
+                  .UseSqlManager();
+                  // Uncomment if you want to load model directly from DB               
+                  // .RegisterDbGate<SqlServerGate>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,9 +75,16 @@ namespace EqReactDemo
             }
 
             app.UseEasyQuery(options => {
-                options.DefaultModelId = "NWindSQL";
-                options.UseQueryStore(services => new FileQueryStore("App_Data"));
-                options.UseDbConnection<System.Data.SqlClient.SqlConnection>(Configuration.GetConnectionString("EqDemoDb"));
+                options.DefaultModelId = "nwind";
+
+                options.SaveNewQuery = false;
+
+                options.UseDbContext<AppDbContext>();
+
+                // Uncomment if you want to donwload model directly from DB
+                // options.UseDbConnectionModelLoader();
+
+                options.UseQueryStore((_) => new FileQueryStore("App_Data"));
             });
 
             app.UseRouting();
@@ -92,10 +105,8 @@ namespace EqReactDemo
                 }
             });
 
-
-            var scriptFilePath = "App_Data\\EqDemoDb.sql";
-            var dbInit = new EqReactDemo.Data.DbInitializer(Configuration, "EqDemoDb", scriptFilePath);
-            dbInit.EnsureCreated();
+            //Init demo database (if necessary)
+            app.EnsureDbInitialized(Configuration, env);
         }
     }
 }

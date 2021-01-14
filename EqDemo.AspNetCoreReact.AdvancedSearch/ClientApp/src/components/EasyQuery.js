@@ -17,8 +17,6 @@ export class EasyQuery extends Component {
             enableExport: true,
             loadModelOnStart: true,
             loadQueryOnStart: false,
-            defaultQueryId: "test-query",
-            defaultModelId: "NWindSQL",
 
             //Middlewares endpoint
             endpoint: '/api/easyquery',
