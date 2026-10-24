@@ -1,0 +1,28 @@
+################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+*.bak
+.vs/
+.vscode/
+bin/
+obj/
+bower_components
+packages/
+node_modules/
+lib/
+dist/
+www/
+PublishProfiles/
+package-lock.json
+
+App_Data/dm-*__default/
+**/eqdemo-sqlite.*
+**/eqdemo-auth-sqlite.*
+
+*.lck
+.idea
+
+# Build caches and per-user files (added when the samples moved out of DotNetSamples)
+.angular/
+.stencil/
+*.user

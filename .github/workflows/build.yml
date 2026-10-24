@@ -1,0 +1,23 @@
+# Builds this repository on every push and pull request with the shared workflow
+# easyquery/.github/.github/workflows/build-samples.yml, pinned to its v1 tag.
+# The check it reports, "build / build", is required on main and beta.
+#
+# The same build, locally (Windows, from the repository root):
+#   msbuild Samples.React.sln -restore -p:Configuration=Release
+#   then, in each client app folder:
+#     AdvancedSearch/ClientApp
+#   npm install && npm run build
+name: Build
+
+on:
+  push:
+    branches: [main, beta, dev]
+  pull_request:
+    branches: [main, beta, dev]
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: easyquery/.github/.github/workflows/build-samples.yml@v1
+    with:
+      solution: Samples.React.sln
