@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
@@ -13,6 +13,10 @@
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+    <!-- Transitive pin: EF Core 10.0.x resolves Microsoft.Data.SqlClient 6.1.7, whose
+         System.Security.Cryptography.Pkcs 9.0.11 is vulnerable (NU1902/NU1903). Can be dropped once
+         EF Core depends on Microsoft.Data.SqlClient 6.1.8 or later. -->
+    <PackageReference Include="Microsoft.Data.SqlClient" />
   </ItemGroup>
   <ItemGroup>
     <!-- DB initialization packages. They are not necessary for EasyQuery working and can be removed in production -->
@@ -30,8 +34,6 @@
     <PackageReference Include="Korzh.EasyQuery.SqlServerGate" />
     <PackageReference Include="Korzh.EasyQuery.SqLiteGate" />
     <PackageReference Include="Korzh.EasyQuery.DataExport" />
-    <PackageReference Include="System.Net.Http" />
-    <PackageReference Include="System.Text.RegularExpressions" />
   </ItemGroup>
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->

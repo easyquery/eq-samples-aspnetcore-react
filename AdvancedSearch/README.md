@@ -23,7 +23,7 @@ All EasyQuery server settings are in `Startup.cs`: `AddEasyQuery()` in `Configur
 
 | | |
 |---|---|
-| .NET | .NET 6 (`net6.0`) |
+| .NET | .NET 10 (`net10.0`) |
 | Platform | ASP.NET Core |
 | UI framework | **React 16** (Create React App, `react-scripts` 5), served through `Microsoft.AspNetCore.SpaServices.Extensions` |
 | EasyQuery for .NET | **7.5.0**: `Korzh.EasyQuery.AspNetCore`, `Korzh.EasyQuery.EntityFrameworkCore.Relational`, `Korzh.EasyQuery.DataExport`, `Korzh.EasyQuery.SqLiteGate`, `Korzh.EasyQuery.SqlServerGate` |
@@ -54,8 +54,8 @@ All EasyQuery server settings are in `Startup.cs`: `AddEasyQuery()` in `Configur
 
 ## How to start
 
-1. Install the [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) (or later, with the
-   .NET 6 runtime) and [Node.js](https://nodejs.org/) (LTS; `npm` must be in `PATH`).
+1. Install the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) (or later) and
+   [Node.js](https://nodejs.org/) (LTS; `npm` must be in `PATH`).
 2. You don't need a license key to start. On the first run the page shows a **No license**
    dialog that gets you a free 30-day trial key. A purchased key goes into `appsettings.json`
    (`EasyQuery:LicenseKey`); see [License key](../README.md#license-key).
@@ -104,14 +104,13 @@ doesn't change. To show your database instead of Northwind:
 
    ```bash
    dotnet new tool-manifest
-   dotnet tool install dotnet-ef --version 6.0.36
-   dotnet add package Microsoft.EntityFrameworkCore.Design --version 6.0.1
+   dotnet tool install dotnet-ef --version 10.0.14
+   dotnet add package Microsoft.EntityFrameworkCore.Design --version 10.0.14
    dotnet ef dbcontext scaffold "<your connection string>" Microsoft.EntityFrameworkCore.SqlServer --output-dir Models/MyDb --namespace EqDemo.Models --context AppDbContext --context-dir Data --context-namespace EqDemo --no-onconfiguring --force
    ```
 
-   * The project targets .NET 6, so it needs `dotnet-ef` 6. A newer, global `dotnet-ef` stops with
-     *Could not load file or assembly 'System.Runtime, Version=8.0.0.0'*. The first two commands
-     install version 6 for this folder only.
+   * The first two commands install `dotnet-ef` 10, matching the project's EF Core, for this
+     folder only.
    * `dotnet add package` puts the version into `../Directory.Packages.props`.
    * The scaffolding builds the project first, and the first build runs `npm install`.
 
